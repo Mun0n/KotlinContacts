@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">KotlinContacts</string>
+    <string name="retry_button">Retry</string>
+    <string name="retry_message">There is a problem getting contacts</string>
+    <string name="title_user">Users list</string>
+</resources>
