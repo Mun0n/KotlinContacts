@@ -1,7 +1,7 @@
 package com.mun0n.kotlincontacts.presentation.view
 
 import android.content.Context
-import com.mun0n.kotlincontacts.presentation.model.UserModel.UserModel
+import com.mun0n.kotlincontacts.presentation.model.UserModel
 
 interface UserListView {
 

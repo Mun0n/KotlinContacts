@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.mun0n.kotlincontacts.R
-import com.mun0n.kotlincontacts.presentation.model.UserModel.UserModel
+import com.mun0n.kotlincontacts.presentation.model.UserModel
 import com.mun0n.kotlincontacts.presentation.view.UserListView
 
 class UserListActivity : AppCompatActivity(), UserListView {
