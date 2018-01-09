@@ -8,9 +8,10 @@ class GetUserListInteractor {
     fun execute(success: (List<User>) -> Unit, fail: () -> Unit) {
         val callResponse = RetrofitClient.contactsApi.getContacts(15)
         val response = callResponse.execute()
+        val results = response.body()?.results ?: ArrayList()
 
         if (response.isSuccessful) {
-            success(response.body().results)
+            success(results)
         } else {
             fail()
         }

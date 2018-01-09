@@ -1,17 +1,32 @@
 package com.mun0n.kotlincontacts.presentation.presenter
 
-class UserListPresenter : Presenter {
+import com.mun0n.kotlincontacts.presentation.interactor.GetUserListInteractor
+import com.mun0n.kotlincontacts.presentation.mapper.UserModelDataMapper
+import com.mun0n.kotlincontacts.presentation.view.UserListView
 
-    override fun onResume(): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class UserListPresenter(private var getUserListInteractor: GetUserListInteractor, private var userModelDataMapper: UserModelDataMapper) {
+
+    private var _view: UserListView? = null
+
+    val view
+        get() = _view
+
+    fun bind(view: UserListView) {
+        this._view = view
     }
 
-    override fun onPause(): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun unbind() {
+        _view = null
     }
 
-    override fun onDestroy(): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun getUserData() {
+        view?.showLoading()
+        getUserListInteractor.execute(
+                success = {
+                    view?.hideLoading()
+                },
+                fail = {
+                    view?.hideLoading()
+                })
     }
-
 }
