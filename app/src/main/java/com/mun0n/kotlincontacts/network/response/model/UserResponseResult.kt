@@ -1,4 +1,6 @@
 package com.mun0n.kotlincontacts.network.response.model
 
-class UserResponseResult {
-}
+data class UserResponseResult(
+        var results: List<User> = ArrayList(),
+        var info: Info
+)

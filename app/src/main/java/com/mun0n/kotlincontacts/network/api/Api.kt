@@ -10,5 +10,5 @@ interface Api {
 
     @Headers("Content-Type: application/json")
     @GET("/api/")
-    fun getContacts(@Query("results") quantity: Integer): Call<UserResponseResult>
+    fun getContacts(@Query("results") quantity: Int): Call<UserResponseResult>
 }

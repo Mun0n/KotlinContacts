@@ -4,9 +4,9 @@ import com.mun0n.kotlincontacts.network.api.Api
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class RetrofitClient {
+object RetrofitClient {
 
-    private val contactsApi: Api
+    val contactsApi: Api
     private val BASE_URL = "https://randomuser.me/"
 
     init {
