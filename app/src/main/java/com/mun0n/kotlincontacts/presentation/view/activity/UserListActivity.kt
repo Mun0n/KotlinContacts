@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import android.widget.Toast
 import com.mun0n.kotlincontacts.R
 import com.mun0n.kotlincontacts.presentation.interactor.GetUserListInteractor
 import com.mun0n.kotlincontacts.presentation.mapper.UserModelDataMapper
@@ -18,19 +20,12 @@ import kotlinx.android.synthetic.main.activity_user_list.*
 
 class UserListActivity : AppCompatActivity(), UserListView, UserListener {
 
-    override fun onUserPhotoClicked(userModel: UserModel): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onDeleteClicked(userModel: UserModel): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private var userModelDataMapper: UserModelDataMapper = UserModelDataMapper()
+
     private var interactor: GetUserListInteractor = GetUserListInteractor()
     private var presenter: UserListPresenter = UserListPresenter(interactor, userModelDataMapper)
-
-    private var progressDialog: ProgressDialog = ProgressDialog(this)
+    private lateinit var progressDialog: ProgressDialog
+    private lateinit var userAdapter: UserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,21 +37,22 @@ class UserListActivity : AppCompatActivity(), UserListView, UserListener {
             supportActionBar!!.setDisplayShowHomeEnabled(false)
             supportActionBar!!.setHomeButtonEnabled(false)
         }
-
+        progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate = true
+        progressDialog.setCancelable(false)
 
         presenter.bind(this)
         presenter.getUserData()
 
-        btRetry.setOnClickListener() { view ->
+        btRetry.setOnClickListener { view ->
             presenter.getUserData()
         }
 
         rvUser.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         rvUser.setHasFixedSize(true)
         rvUser.layoutManager = LinearLayoutManager(this)
-        rvUser.adapter = UserAdapter(this, this)
-
+        userAdapter = UserAdapter(this, this)
+        rvUser.adapter = userAdapter
 
     }
 
@@ -65,27 +61,47 @@ class UserListActivity : AppCompatActivity(), UserListView, UserListener {
         presenter.unbind()
     }
 
-    override fun showLoading(): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showLoading() {
+        progressDialog.setTitle(R.string.progress_title)
+        progressDialog.setMessage(getString(R.string.progress_message))
+        progressDialog.show()
     }
 
-    override fun hideLoading(): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun hideLoading() {
+        progressDialog.hide()
     }
 
-    override fun showError(): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showError() {
+        rvUser.visibility = View.GONE
+        llRetry.visibility = View.VISIBLE
     }
 
-    override fun showErrorRequest(): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showErrorRequest() {
+        Toast.makeText(this, R.string.error_requesting_more_users, Toast.LENGTH_SHORT).show()
     }
 
     override fun context(): Context {
+        return applicationContext
+    }
+
+    override fun loadUserData(users: Collection<UserModel>) {
+        userAdapter.userList = users.toMutableList()
+        rvUser.visibility = View.VISIBLE
+        llRetry.visibility = View.GONE
+        showUserListSize()
+    }
+
+    override fun onUserPhotoClicked(userModel: UserModel) {
+
+    }
+
+    override fun onDeleteClicked(userModel: UserModel): Void {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun loadUserData(users: Collection<UserModel>): Void {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun showUserListSize() {
+        Toast.makeText(this,
+                String.format("%s: %s", getString(R.string.message_list_size), userAdapter.userList.size),
+                Toast.LENGTH_SHORT).show()
     }
 }

@@ -5,11 +5,11 @@ import com.mun0n.kotlincontacts.presentation.model.UserModel
 
 interface UserListView {
 
-    fun showLoading(): Void
-    fun hideLoading(): Void
-    fun showError(): Void
-    fun showErrorRequest(): Void
+    fun showLoading()
+    fun hideLoading()
+    fun showError()
+    fun showErrorRequest()
     fun context(): Context
-    fun loadUserData(users: Collection<UserModel>): Void
+    fun loadUserData(users: Collection<UserModel>)
 
 }

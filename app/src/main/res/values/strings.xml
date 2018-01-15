@@ -3,4 +3,8 @@
     <string name="retry_button">Retry</string>
     <string name="retry_message">There is a problem getting contacts</string>
     <string name="title_user">Users list</string>
+    <string name="progress_title">Wait please</string>
+    <string name="progress_message">Loading user data</string>
+    <string name="error_requesting_more_users">Error requesting more users</string>
+    <string name="message_list_size">User list size</string>
 </resources>
