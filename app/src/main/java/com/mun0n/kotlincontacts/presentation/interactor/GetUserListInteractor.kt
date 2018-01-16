@@ -1,19 +1,29 @@
 package com.mun0n.kotlincontacts.presentation.interactor
 
 import com.mun0n.kotlincontacts.network.RetrofitClient
-import com.mun0n.kotlincontacts.network.response.model.User
+import com.mun0n.kotlincontacts.network.response.model.UserResponseResult
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class GetUserListInteractor {
+class GetUserListInteractor() : Callback<UserResponseResult> {
 
-    fun execute(success: (List<User>) -> Unit, fail: () -> Unit) {
-        val callResponse = RetrofitClient.contactsApi.getContacts(15)
-        val response = callResponse.execute()
-        val results = response.body()?.results ?: ArrayList()
+    private lateinit var responseListener: ResponseListener
 
-        if (response.isSuccessful) {
-            success(results)
+    fun execute(responseListener: ResponseListener) {
+        this.responseListener = responseListener
+        RetrofitClient.contactsApi.getContacts(15).enqueue(this)
+    }
+
+    override fun onResponse(call: Call<UserResponseResult>?, response: Response<UserResponseResult>?) {
+        if (response!!.isSuccessful) {
+            responseListener.onSuccess(response!!.body()?.results ?: ArrayList())
         } else {
-            fail()
+            responseListener.onError()
         }
+    }
+
+    override fun onFailure(call: Call<UserResponseResult>?, t: Throwable?) {
+        responseListener.onError()
     }
 }
