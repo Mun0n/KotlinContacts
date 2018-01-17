@@ -86,6 +86,7 @@ class UserListActivity : AppCompatActivity(), UserListView, UserListener {
 
     override fun loadUserData(users: Collection<UserModel>) {
         userAdapter.userList = users.toMutableList()
+        userAdapter.notifyDataSetChanged()
         rvUser.visibility = View.VISIBLE
         llRetry.visibility = View.GONE
         showUserListSize()
